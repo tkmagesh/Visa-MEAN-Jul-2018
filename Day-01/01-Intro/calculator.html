@@ -3,6 +3,68 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Calculator</title>
+	<script>
+		
+		function init(){
+			
+
+			var btnAdd = document.getElementById('btnAdd');
+			btnAdd.addEventListener('click', onBtnAddClick);
+
+			var btnSubtract = document.getElementById('btnSubtract');
+			btnSubtract.addEventListener('click', onBtnSubtractClick);
+
+			var btnMultiply = document.getElementById('btnMultiply');
+			btnMultiply.addEventListener('click', onBtnMultiplyClick);
+
+			var btnDivide = document.getElementById('btnDivide');
+			btnDivide.addEventListener('click', onBtnDivideClick);
+		}
+
+		function getInputs(){
+			var txtNumber1 = document.getElementById('txtNumber1');
+			var txtNumber2 = document.getElementById('txtNumber2');
+
+			var num1 = parseInt(txtNumber1.value);
+			var num2 = parseInt(txtNumber2.value);
+
+			var inputs = {
+				n1 : num1,
+				n2 : num2
+			};
+
+			return inputs;
+		}
+
+		function displayResult(result){
+			var divResult = document.getElementById('divResult');
+			divResult.innerText = result;
+		}
+
+		function onBtnAddClick(){
+			var inputs = getInputs();
+			var result = inputs.n1 + inputs.n2;
+			displayResult(result);
+		}
+
+		function onBtnSubtractClick(){
+			var inputs = getInputs();
+			var result = inputs.n1 - inputs.n2;
+			displayResult(result);
+		}
+		function onBtnMultiplyClick(){
+			var inputs = getInputs();
+			var result = inputs.n1 * inputs.n2;
+			displayResult(result);
+		}
+		function onBtnDivideClick(){
+			var inputs = getInputs();
+			var result = inputs.n1 / inputs.n2;
+			displayResult(result);
+		}
+		window.addEventListener('DOMContentLoaded', init);
+
+	</script>
 </head>
 <body>
 	<h1>Calculator</h1>
