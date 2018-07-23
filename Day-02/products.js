@@ -11,6 +11,14 @@ function describe(title, fn){
 	fn();
 	console.groupEnd();
 }
+
+function describeGroup(groupedObj){
+	for(var key in groupedObj){
+		describe('Key - [' + key + ']', function(){
+			console.table(groupedObj[key]);
+		});
+	}
+}
 /*sort, filter, groupBy*/
 
 describe('Default List', function(){
@@ -98,28 +106,76 @@ describe('Sort', function(){
 	});
 });
 
-
 describe('Filter', function(){
 	describe('Default - [stationary products]', function(){
 		function filterStationaryProducts(){
-
+			var stationaryProducts = [];
+			for(var index = 0, count = products.length; index < count; index++)
+				if (products[index].category === 'stationary')
+					stationaryProducts.push(products[index]);
+			return stationaryProducts;
 		}
 		var stationaryProducts = filterStationaryProducts();
 		console.table(stationaryProducts);
 	});
 
 	describe('Any list by any criteria', function(){
-		function filter(/*...*/){
-
+		function filter(list, criteria){
+			var result = [];
+			for(var index = 0, count = list.length; index < count; index++)
+				if (criteria(list[index]))
+					result.push(list[index]);
+			return result;
 		}
 		describe('costly products [cost > 50]', function(){
-			var costlyProducts = filter(/*....*/);
+			var costlyProductCriteria = function(product){
+				return product.cost > 50;
+			}
+			var costlyProducts = filter(products, costlyProductCriteria);
 			console.table(costlyProducts);
 		});
 		describe('understocked products [units < 50]', function(){
-			var underStockedProducts = filter(/*....*/);
+			var understockedProductCriteria = function(product){
+				return product.units < 50;
+			};
+			var underStockedProducts = filter(products, understockedProductCriteria);
 			console.table(underStockedProducts);
 		});
 	})
 });
 
+describe('GroupBy', function(){
+	describe('Products by category', function(){
+		function groupProductsByCategory(){
+			var result = {};
+			for(var index = 0, count = products.length; index < count; index++){
+				var key = products[index].category;
+				if (typeof result[key] === 'undefined')
+					result[key] = [];
+				result[key].push(products[index]);
+			}
+			return result;
+		}
+		var productsByCategory = groupProductsByCategory();
+		describeGroup(productsByCategory);
+	});
+	describe('Any list by any key', function(){
+		function groupBy(list, keySelector){
+			var result = {};
+			for(var index = 0, count = list.length; index < count; index++){
+				var key = keySelector(list[index]);
+				if (typeof result[key] === 'undefined')
+					result[key] = [];
+				result[key].push(list[index]);
+			}
+			return result;
+		}
+		describe('products by cost', function(){
+			var costKeySelector = function(product){
+				return product.cost < 50 ? 'affordable' : 'costly';
+			};
+			var productsByCost = groupBy(products, costKeySelector);
+			describeGroup(productsByCost);
+		});
+	})
+});
