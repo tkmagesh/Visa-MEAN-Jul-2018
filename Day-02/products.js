@@ -93,15 +93,25 @@
 							list[j] = temp;
 						}
 			}*/
-			describe('Products by value [cost * units]', function(){
-				function productComparerByValue(p1, p2){
-					var p1Value = p1.cost * p1.units,
-						p2Value = p2.cost * p2.units;
-					if (p1Value < p2Value) return -1;
-					if (p1Value > p2Value) return 1;
-					return 0;
+			function productComparerByValue(p1, p2){
+				var p1Value = p1.cost * p1.units,
+					p2Value = p2.cost * p2.units;
+				if (p1Value < p2Value) return -1;
+				if (p1Value > p2Value) return 1;
+				return 0;
+			}
+			function getDescendingComparer(comparer){
+				return function(p1, p2){
+					return comparer(p1, p2) * -1;
 				}
+			}
+			describe('Products by value [cost * units]', function(){
 				sort(products, productComparerByValue);
+				console.table(products);
+			});
+			describe('Products by value [cost * units] in descending order' , function(){
+				var productDescendingComparerByValue = getDescendingComparer(productComparerByValue);
+				sort(products, productDescendingComparerByValue);
 				console.table(products);
 			});
 		});
