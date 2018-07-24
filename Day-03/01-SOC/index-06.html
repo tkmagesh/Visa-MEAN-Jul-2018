@@ -71,6 +71,7 @@
 			$(function(){
 				window.model = new SalaryCalculatorModel();
 
+				//React to user actions
 				$('#txtBasic').change(function(){
 					model.set('basic', $(this).val().toInt());
 				});
@@ -87,24 +88,26 @@
 					model.set('tax', $(this).val().toInt());
 				});
 
-
 				$('#btnCalculate').click(function(){
-
 					model.calculate();
-
-					
-					$('#tdHra').html(model.hra);
-					$('#tdDa').html(model.da);
-					$('#tdTax').html(model.tax);
-					
 				});
 
-				model.onSalaryChange = function(){
-					$('#tdSalary').html(model.salary);
-				};
-				model.onBasicChange = function(){
-					$('#tdBasic').html(model.getBasic());
-				}
+				//React to model changes
+				model.onChange('salary', function(){
+					$('#tdSalary').html(model.get('salary'));
+				});
+				model.onChange('basic', function(){
+					$('#tdBasic').html(model.get('basic'));
+				});
+				model.onChange('hra', function(){
+					$('#tdHra').html(model.get('hra'));
+				});
+				model.onChange('da', function(){
+					$('#tdDa').html(model.get('da'));
+				});
+				model.onChange('tax', function(){
+					$('#tdTax').html(model.get('tax'));
+				});
 			});
 		})();
 	</script>
