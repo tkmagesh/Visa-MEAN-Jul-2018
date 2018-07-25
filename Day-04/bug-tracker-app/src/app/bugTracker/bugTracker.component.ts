@@ -16,4 +16,12 @@ export class BugTrackerComponent{
 		};
 		this.bugs.push(newBug);
 	}
+
+	onBugNameClick(bug){
+		bug.isClosed = !bug.isClosed;
+	}
+
+	onRemoveClosedClick(){
+		this.bugs = this.bugs.filter(bug => !bug.isClosed);
+	}
 }
