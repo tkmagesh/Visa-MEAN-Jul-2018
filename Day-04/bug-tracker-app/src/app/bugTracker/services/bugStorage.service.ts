@@ -18,6 +18,7 @@ export class BugStorageService{
 			let key = this.storage.key(index),
 				rawData = this.storage.getItem(key),
 				bug = JSON.parse(rawData);
+			this.currentBugId = this.currentBugId < bug.id ? bug.id : this.currentBugId;
 			result.push(bug);
 		}
 		return result;

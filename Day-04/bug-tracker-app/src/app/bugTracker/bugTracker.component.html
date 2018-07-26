@@ -9,11 +9,7 @@
 	<label for="">Descending ? :</label>
 	<input type="checkbox" (change)="sortBugDescending = $event.target.checked" >
 </section>
-<section class="edit">
-	<label for="">Bug Name :</label>
-	<input type="text" [(ngModel)]="newBugName">
-	<input type="button" value="Add New" (click)="onAddNewClick()">
-</section>
+<app-bug-edit (bugAdded)="onNewBugAdded($event)"></app-bug-edit>
 <section class="list">
 	<ol>
 		<li *ngFor="let bug of ( bugs | sort:sortBugBy:sortBugDescending )">
@@ -21,7 +17,7 @@
 				(click)="onBugNameClick(bug)"
 				[ngClass]="{closed : bug.isClosed}"
 			>{{bug.name | trimText:40}}</span>
-			<div class="datetime">[{{bug.createdAt}}]</div>
+			<div class="datetime">[{{bug.createdAt | elapsed}}]</div>
 		</li>
 	</ol>
 	<input type="button" value="Remove Closed" (click)="onRemoveClosedClick()">

@@ -9,7 +9,7 @@ import { BugOperationsService } from './services/bugOperations.service';
 export class BugTrackerComponent{
 	bugs : Bug[] = [];
 	
-	newBugName : string = '';
+	
 
 	sortBugBy : string = 'name';
 
@@ -22,12 +22,10 @@ export class BugTrackerComponent{
 
 	}
 
-	onAddNewClick(){
-		let newBug : Bug = this.bugOperationsService.createNew(this.newBugName);
-		this.bugs = [...this.bugs , newBug];
-		this.newBugName = '';
+	onNewBugAdded(newBug : Bug){
+		this.bugs = [...this.bugs, newBug];
 	}
-
+	
 	onBugNameClick(bugToToggle : Bug){
 		let toggledBug = this.bugOperationsService.toggle(bugToToggle);
 		this.bugs = this.bugs.map(bug => bug === bugToToggle ? toggledBug : bug);
