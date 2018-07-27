@@ -26,9 +26,20 @@ export class BugEditComponent{
 	}
 
 	onAddNewClick(){
-		this.bugOperationsService
-			.createNew(this.newBugName)
-			.subscribe(newBug => this.bugAdded.emit(newBug));
+		//let newBug : Bug = this.bugOperationsService.createNew(this.newBugName);
+		//this.bugs = [...this.bugs , newBug];
+		var newBugData = {
+			id : 0,
+			name : this.newBugName,
+			isClosed : false,
+			createdAt : new Date
+		};
+		axios.post(`http://localhost:3000/bugs`, newBugData)
+			.then(response => response.data)
+			.then(newBug => {
+				this.bugAdded.emit(newBug);
+				this.newBugName = '';
+			});
 		
 		
 	}

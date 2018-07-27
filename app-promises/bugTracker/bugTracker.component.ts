@@ -28,7 +28,6 @@ export class BugTrackerComponent implements OnInit{
 		this.bugs = [...this.bugs, newBug];
 	}
 
-	//Using Promise API
 	/*ngOnInit(){
 		this.bugOperationsService
 			.getAll()
@@ -52,8 +51,7 @@ export class BugTrackerComponent implements OnInit{
 		
 	}*/
 
-	//Using Async Await
-	/*async ngOnInit(){
+	async ngOnInit(){
 		let bugs = await this.bugOperationsService.getAll();
 		this.bugs = bugs;
 	}
@@ -69,30 +67,6 @@ export class BugTrackerComponent implements OnInit{
 			.forEach(async closedBug => {
 				await this.bugOperationsService.remove(closedBug);
 				this.bugs = this.bugs.filter(bug => bug.id !== closedBug.id);
-			});
-		
-	}*/
-
-	//Using Observables
-	ngOnInit(){
-		this.bugOperationsService
-			.getAll()
-			.subscribe(bugs => this.bugs = bugs);
-	}
-	
-	onBugNameClick(bugToToggle : Bug){
-		this.bugOperationsService
-			.toggle(bugToToggle)
-			.subscribe(toggledBug => this.bugs = this.bugs.map(bug => bug === bugToToggle ? toggledBug : bug));
-	}
-
-	onRemoveClosedClick(){
-		let allPromsies = this.bugs
-			.filter(bug => bug.isClosed)
-			.forEach(closedBug => {
-				this.bugOperationsService
-					.remove(closedBug)
-					.subscribe(_ => this.bugs = this.bugs.filter(bug => bug.id !== closedBug.id));
 			});
 		
 	}

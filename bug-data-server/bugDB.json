@@ -11,6 +11,18 @@
       "name": "User actions not recognized",
       "isClosed": false,
       "createdAt": "2018-07-27T06:28:27.157Z"
+    },
+    {
+      "id": 7,
+      "name": "Server communication failure",
+      "isClosed": false,
+      "createdAt": "2018-07-27T09:21:29.488Z"
+    },
+    {
+      "id": 8,
+      "name": "Data integrity checks failed",
+      "isClosed": false,
+      "createdAt": "2018-07-27T09:25:21.646Z"
     }
   ],
   "projects": [
