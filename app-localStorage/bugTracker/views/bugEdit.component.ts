@@ -1,8 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { BugOperationsService } from '../services/bugOperations.service';
 import { Bug } from '../models/Bug';
- 
-import axios from 'axios';
 
 @Component({
 	selector : 'app-bug-edit',
@@ -26,22 +24,10 @@ export class BugEditComponent{
 	}
 
 	onAddNewClick(){
-		//let newBug : Bug = this.bugOperationsService.createNew(this.newBugName);
+		let newBug : Bug = this.bugOperationsService.createNew(this.newBugName);
 		//this.bugs = [...this.bugs , newBug];
-		var newBugData = {
-			id : 0,
-			name : this.newBugName,
-			isClosed : false,
-			createdAt : new Date
-		};
-		axios.post(`http://localhost:3000/bugs`, newBugData)
-			.then(response => response.data)
-			.then(newBug => {
-				this.bugAdded.emit(newBug);
-				this.newBugName = '';
-			});
-		
-		
+		this.bugAdded.emit(newBug);
+		this.newBugName = '';
 	}
 
 

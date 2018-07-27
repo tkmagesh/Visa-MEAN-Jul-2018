@@ -1,27 +1,15 @@
 {
   "bugs": [
     {
-      "id": 1,
-      "name": "Data integrity checks failed",
-      "isClosed": true,
-      "createdAt": "2018-05-24T10:57:55.421Z"
-    },
-    {
       "id": 2,
       "name": "Server communication failure",
       "isClosed": false,
       "createdAt": "2018-05-30T10:32:18.568Z"
     },
     {
-      "id": 3,
-      "name": "User action not recognized",
-      "isClosed": false,
-      "createdAt": "2018-06-10T11:19:31.985Z"
-    },
-    {
       "id": 4,
       "name": "Application not responding",
-      "isClosed": true,
+      "isClosed": false,
       "createdAt": "2018-07-06T11:23:34.939Z"
     },
     {
@@ -29,6 +17,12 @@
       "name": "Bugs are not added",
       "isClosed": false,
       "createdAt": "2018-07-08T11:32:46.662Z"
+    },
+    {
+      "id": 6,
+      "name": "User actions not recognized",
+      "isClosed": false,
+      "createdAt": "2018-07-27T06:28:27.157Z"
     }
   ],
   "projects": [
