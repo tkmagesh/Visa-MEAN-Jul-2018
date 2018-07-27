@@ -30,5 +30,32 @@ var app = (function(){
 		});
 	}
 
-	return { addAsyncClient, addSyncClient }
+	var addAsyncEvents = (function(){
+		var _listeners = [];
+
+		function subscribe(listenerFn){
+			_listeners.push(listenerFn);
+		}
+
+		function trigger(result){
+			_listeners.forEach(listenerFn => listenerFn(result));
+		}
+
+		function doAdd(x,y){
+			console.log(`	[@Service] processing ${x} and ${y}`);
+			setTimeout(function(){
+				var result = x + y;
+				console.log(`	[@Service] returning result`);
+				trigger(result);
+			},3000);
+		}
+		return { subscribe, doAdd };
+	})();
+	
+
+	return { 
+		addAsyncClient, 
+		addSyncClient, 
+		addAsyncEvents 
+	};
 })();
