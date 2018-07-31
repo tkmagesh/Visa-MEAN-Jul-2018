@@ -22,15 +22,27 @@ const server = http.createServer((req, res) => {
 			return;
 		}
 		fs.createReadStream(resourcePath).pipe(res);
-	} else if (urlObj.pathname === '/calculator'){
-		let queryData = querystring.parse(urlObj.query);
-		let n1 = parseInt(queryData.n1),
-			n2 = parseInt(queryData.n2),
-			op = queryData.op;
+	} else if (urlObj.pathname === '/calculator' && req.method === "GET"){
+		let calcData = querystring.parse(urlObj.query);
+		let n1 = parseInt(calcData.n1),
+			n2 = parseInt(calcData.n2),
+			op = calcData.op;
 
-		let result = calculator[op](n1, n2);
-		res.write(result.toString());
-		res.end();
+			let result = calculator[op](n1, n2);
+			res.write(result.toString());
+			res.end();
+	} else if (urlObj.pathname === '/calculator' && req.method === "POST"){
+		let rawData = '';
+		req.on('data', (chunk)=> rawData += chunk);
+		req.on('end', () => {
+			let calcData = querystring.parse(rawData);
+			let n1 = parseInt(calcData.n1),
+				n2 = parseInt(calcData.n2),
+				op = calcData.op;
+			let result = calculator[op](n1, n2);
+			res.write(result.toString());
+			res.end();	
+		});
 	} else {
 		res.statusCode = 404;
 		res.end();
