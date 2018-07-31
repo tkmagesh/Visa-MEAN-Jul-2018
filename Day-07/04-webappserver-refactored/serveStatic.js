@@ -16,6 +16,14 @@ module.exports = function(req, res){
 			res.end();
 			return;
 		}
-		fs.createReadStream(resourcePath).pipe(res);
+		//fs.createReadStream(resourcePath).pipe(res);
+		let stream = fs.createReadStream(resourcePath);
+		stream.on('data', function(chunk){
+			console.log('[@serveStatic] serving one chunk of data to response');
+			res.write(chunk);
+		});
+		stream.on('end', function(){
+			res.end();
+		});
 	}
 }
