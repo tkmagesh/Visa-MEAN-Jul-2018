@@ -9,15 +9,20 @@ let fileContents = fs.readFileSync(dataFile, { encoding : 'utf8'});
 
 var list = JSON.parse(fileContents);
 
+
+
 function writeToFile(list){
+	
+
 	let data = JSON.stringify(list);
 	//fs.writeFile(dataFile, data, callback);
 	//return writeFileAsync(dataFile, data);
 	return new Promise(function(resolve, reject){
 		fs.writeFile(dataFile, data, () => resolve());
-	}
+	});
 }
 function getAll(){
+	
 	return Promise.resolve([...list]);
 }
 
