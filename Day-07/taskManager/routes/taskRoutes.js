@@ -1,19 +1,16 @@
 var express = require('express');
 var router = express.Router();
+const taskService = require('../services/taskService');
 
 
-var list = [
-	{id : 1, name : 'Watch a movie', isCompleted : false},
-	{id : 2, name : 'Master JavaScript', isCompleted : true}
-];
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.json(list);
+  res.json(taskService.getAll());
 });
 
 router.get('/:id', function(req, res, next){
-	let taskToReturn = list.find(task => task.id === parseInt(req.params.id));
+	let taskToReturn = taskService.get(parseInt(req.params.id));
 	if (taskToReturn){
 		res.json(taskToReturn);
 	} else {
@@ -23,39 +20,34 @@ router.get('/:id', function(req, res, next){
 
 router.post('/', function(req, res, next){
 	var newTaskData = req.body;
-	var newTaskId = list.reduce((result, task) => result > task.id ? result : task.id, 0) + 1;
-	var newTask = { ...newTaskData, id : newTaskId};
-	list.push(newTask);
+	var newTask = taskService.addNew(newTaskData);
 	res.status(201).json(newTask);
 })
 
 router.put('/:id', function(req, res, next){
 	var taskIdToUpdate = parseInt(req.params.id),
-		taskToUpdate = list.find(task => task.id === taskIdToUpdate),
 		updatedTask = req.body;
-	if (taskToUpdate){
-		list = list.map(task => task.id === taskToUpdate.id ? updatedTask : task);
-		res.status(200).json(updatedTask);
+	let result = taskService.update(taskIdToUpdate, updatedTask);
+	if (result){
+		res.status(200).json(result);
 	} else {
-		res.status(404).end();
+		res.status(404).end(); 
 	}
 });
 
 router.patch('/:id', function(req, res, next){
 	var taskIdToUpdate = parseInt(req.params.id),
-		taskToUpdate = list.find(task => task.id === taskIdToUpdate),
-		updatedTask = { ...taskToUpdate, ...req.body };
-	if (taskToUpdate){
-		list = list.map(task => task.id === taskToUpdate.id ? updatedTask : task);
-		res.status(200).json(updatedTask);
+		dataToUpdate = req.body;
+	let result = taskService.partialUpdate(taskIdToUpdate, dataToUpdate);
+	if (result){
+		res.status(200).json(result);
 	} else {
 		res.status(404).end();
 	}
 });
 
 router.delete('/:id', function(req, res, next){
-	var taskIdToDelete = parseInt(req.params.id);
-	list = list.filter(task => task.id !== taskIdToDelete);
+	taskService.remove(parseInt(req.params.id));
 	res.json({});
 });
 
