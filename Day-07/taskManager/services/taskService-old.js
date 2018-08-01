@@ -1,33 +1,28 @@
 const fs = require('fs'),
-	path = require('path'),
-	util = require('util');
-
-const writeFile = util.promisify(fs.writeFile);
+	path = require('path');
 
 let dataFile = path.join(__dirname, '../data/taskDB.json');
 let fileContents = fs.readFileSync(dataFile, { encoding : 'utf8'});
 
 var list = JSON.parse(fileContents);
 
-function writeToFile(list){
+function writeToFile(list, callback){
 	let data = JSON.stringify(list);
-	//fs.writeFile(dataFile, data, callback);
-	return writeFile(dataFile, data);
+	fs.writeFile(dataFile, data, callback);
 }
 function getAll(){
-	return Promise.resolve([...list]);
+	return [...list];
 }
 
 function get(id){
-	return Promise.resolve(list.find(task => task.id === parseInt(id)));
+	return list.find(task => task.id === parseInt(id));
 }
 
 function addNew(taskData, callback){
 	var newTaskId = list.reduce((result, task) => result > task.id ? result : task.id, 0) + 1;
 	var newTask = { ...taskData, id : newTaskId};
 	list.push(newTask);
-	return writeToFile(list)
-		.then(() => newTask)
+	writeToFile(list, () => callback(newTask));
 	//return newTask;
 }
 
@@ -36,10 +31,9 @@ function update(taskIdToUpdate, updatedTask, callback){
 	if (taskToUpdate){
 		list = list.map(task => task.id === taskToUpdate.id ? updatedTask : task);
 		//return updatedTask;
-		return writeToFile(list)
-			.then(() => updatedTask);
+		writeToFile(list, () => callback(updatedTask))
 	} else {
-		return Promise.resolve(null);
+		callback(null);
 	}
 }
 
@@ -50,17 +44,15 @@ function partialUpdate(taskIdToUpdate, dataToUpdate, callback){
 	if (taskToUpdate){
 		list = list.map(task => task.id === taskToUpdate.id ? updatedTask : task);
 		//return updatedTask;
-		return writeToFile(list)
-			.then(() => updatedTask);
+		writeToFile(list, () => callback(updatedTask))
 	} else {
-		return Promise.resolve(null);
+		callback(null);
 	}
 }
 
 function remove(id, callback){
 	list = list.filter(task => task.id !== id);
-	return writeFile(list)
-		.then(() => ({}));
+	writeToFile(list, () => callback({}));
 }
 
 module.exports = { addNew, getAll, get, update, partialUpdate, remove};
